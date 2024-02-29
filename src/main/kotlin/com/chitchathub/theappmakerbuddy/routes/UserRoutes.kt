@@ -1,35 +1,38 @@
 package com.chitchathub.theappmakerbuddy.routes
 
-import com.chitchathub.theappmakerbuddy.model.User
-import com.chitchathub.theappmakerbuddy.model.users
+import com.chitchathub.theappmakerbuddy.data.user.datasource.MongoUserDataSource
+import com.chitchathub.theappmakerbuddy.data.user.model.User
+import com.chitchathub.theappmakerbuddy.data.user.model.users
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.userRouting() {
+fun Route.userRouting(
+    userDataSource: MongoUserDataSource
+) {
     route("/user"){
         get {
             if(users.isNotEmpty()){
                 call.respond(users)
-            }
-            else{
+            }else{
                 call.respondText("No user found", status = HttpStatusCode.OK)
             }
         }
 
-        get ("{id?}"){
+        get("{id?}"){
             val id = call.parameters["id"] ?: return@get call.respondText("Missing id", status = HttpStatusCode.BadRequest)
             val user = users.find { it.userId == id } ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound)
 
             call.respond(user)
         }
 
-        post {
+        post{
             val user = call.receive<User>()
             users.add(user)
             call.respondText("User Registered", status = HttpStatusCode.Created)
+            userDataSource.registerUser(user)
         }
 
         delete("{id?}") {

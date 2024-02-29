@@ -1,5 +1,7 @@
 package com.chitchathub.theappmakerbuddy
 
+import com.chitchathub.theappmakerbuddy.data.user.datasource.MongoUserDataSource
+import com.chitchathub.theappmakerbuddy.mongodb.configureMongoDatabase
 import com.chitchathub.theappmakerbuddy.plugins.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -14,6 +16,7 @@ fun main(args: Array<String>) {
 @Suppress("unused")
 fun Application.module() {
 //    configureSecurity()
+    configureMongoDatabase()
     configureMonitoring()
     configureSerialization()
     configureSockets()
