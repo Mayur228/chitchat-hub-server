@@ -1,10 +1,13 @@
 package com.chitchathub.theappmakerbuddy.data.user.model
 
 import kotlinx.serialization.Serializable
+import org.bson.codecs.pojo.annotations.BsonId
+import org.bson.types.ObjectId
 
 @Serializable
 data class User(
-    val userId: String,
+    @BsonId
+    val userId: String = ObjectId().toString(),
     val username: String,
     val userProfilePhoto: String,
     val email: String,
@@ -12,13 +15,4 @@ data class User(
     val password: String
 )
 
-val users = mutableListOf<User>(
-    User(
-        userId = "a1",
-        username = "abc",
-        userProfilePhoto = "",
-        email = "abc@gmail.com",
-        phone = "+91 7095763958",
-        password = "abc@123"
-    )
-)
+//val users = mutableListOf<User>()
