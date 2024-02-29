@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 
 @Suppress("unused")
 fun Application.module() {
-    configureSecurity()
+//    configureSecurity()
     configureMonitoring()
     configureSerialization()
     configureSockets()
