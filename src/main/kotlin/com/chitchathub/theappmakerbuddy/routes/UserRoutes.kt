@@ -22,31 +22,22 @@ fun Route.userRouting(
         }
 
         get("{email}/{password}") {
-            val users = userDataSource.getUsers()
-
             val email = call.parameters["email"] ?: return@get call.respondText("Wrong Email", status = HttpStatusCode.BadRequest)
             val password = call.parameters["password"] ?: return@get call.respondText("Wrong Password", status = HttpStatusCode.BadRequest)
-            val user = users.find { it.email == email && it.password == password } ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound )
+            val user = userDataSource.getUserByEmailAndPassword(email, password) ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound)
             call.respond(user)
-
-            userDataSource.getUserByEmailAndPassword(email,password)
         }
 
         get("{username}/{password}") {
-            val users = userDataSource.getUsers()
-
             val username = call.parameters["username"] ?: return@get call.respondText("Wrong Username", status = HttpStatusCode.BadRequest)
             val password = call.parameters["password"] ?: return@get call.respondText("Wrong Password", status = HttpStatusCode.BadRequest)
-            val user = users.find { it.username == username && it.password == password } ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound )
+            val user = userDataSource.getUserByUsernameAndPassword(username, password) ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound)
             call.respond(user)
-
-            userDataSource.getUserByUsernameAndPassword(username,password)
         }
 
         get("{id?}"){
             val id = call.parameters["id"] ?: return@get call.respondText("Missing id", status = HttpStatusCode.BadRequest)
             val user = userDataSource.getUserById(id) ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound)
-
             call.respond(user)
         }
 

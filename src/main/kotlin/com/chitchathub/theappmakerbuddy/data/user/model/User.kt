@@ -14,5 +14,3 @@ data class User(
     val phone: String,
     val password: String
 )
-
-//val users = mutableListOf<User>()
