@@ -8,6 +8,7 @@ data class Chat(
     val messageTime: String,
     val isMessageRead: Boolean,
     val unReadMessageCount: Int,
+    val isOnline: Boolean
 )
 
 val ChatList = mutableListOf<Chat>()

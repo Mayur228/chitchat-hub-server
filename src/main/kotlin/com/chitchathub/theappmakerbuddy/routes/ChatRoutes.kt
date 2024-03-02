@@ -13,11 +13,13 @@ fun Route.chatRoutes(){
             val chat = ChatList.find { it.roomId == id } ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound)
 
         }
-        post {
+
+        delete("{roomId}") {
 
         }
-        delete {
+    }
 
-        }
+    route("/message"){
+
     }
 }
