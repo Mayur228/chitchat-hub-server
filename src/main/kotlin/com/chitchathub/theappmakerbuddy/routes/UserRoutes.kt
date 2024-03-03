@@ -21,33 +21,49 @@ fun Route.userRouting(
             }
         }
 
-        get("{email}/{password}") {
+        get("/byEmail/{email}/{password}") {
             val email = call.parameters["email"] ?: return@get call.respondText("Wrong Email", status = HttpStatusCode.BadRequest)
             val password = call.parameters["password"] ?: return@get call.respondText("Wrong Password", status = HttpStatusCode.BadRequest)
             val user = userDataSource.getUserByEmailAndPassword(email, password) ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound)
             call.respond(user)
         }
 
-        get("{username}/{password}") {
+        get("/byUsername/{username}/{password}") {
             val username = call.parameters["username"] ?: return@get call.respondText("Wrong Username", status = HttpStatusCode.BadRequest)
             val password = call.parameters["password"] ?: return@get call.respondText("Wrong Password", status = HttpStatusCode.BadRequest)
             val user = userDataSource.getUserByUsernameAndPassword(username, password) ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound)
             call.respond(user)
         }
 
-        get("{id?}"){
+        get("/byId/{id?}"){
             val id = call.parameters["id"] ?: return@get call.respondText("Missing id", status = HttpStatusCode.BadRequest)
             val user = userDataSource.getUserById(id) ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound)
             call.respond(user)
         }
 
-        post{
+        post("/register"){
             val user = call.receive<User>()
             userDataSource.registerUser(user)
             call.respondText("User Registered", status = HttpStatusCode.Created)
         }
 
-        delete("{id?}") {
+        put("/profile/{id?}") {
+            val id = call.parameters["id"] ?: return@put call.respond(HttpStatusCode.BadRequest, "Missing id")
+            val userProfile = call.receive<User>()
+
+            val updatedUser = userDataSource.updateUser(id, userProfile)
+            call.respond(HttpStatusCode.OK, updatedUser)
+        }
+
+        put("/profile/photo/{id?}") {
+            val id = call.parameters["id"] ?: return@put call.respond(HttpStatusCode.BadRequest, "Missing id")
+            val userProfilePhotoUrl = call.receive<String>()
+
+            val updatedUserProfilePhoto = userDataSource.updateUserProfilePhoto(id, userProfilePhotoUrl)
+            call.respond(HttpStatusCode.OK, updatedUserProfilePhoto)
+        }
+
+        delete("/delete/{id?}") {
 
             val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
             if (userDataSource.deleteUser(id)){

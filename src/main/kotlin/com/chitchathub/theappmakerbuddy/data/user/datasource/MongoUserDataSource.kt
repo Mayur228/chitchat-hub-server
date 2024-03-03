@@ -3,7 +3,9 @@ package com.chitchathub.theappmakerbuddy.data.user.datasource
 import com.chitchathub.theappmakerbuddy.data.user.model.User
 import com.mongodb.client.model.Filters
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 
 class MongoUserDataSource(
@@ -59,11 +61,21 @@ class MongoUserDataSource(
     }
 
     override suspend fun updateUser(userId: String, user: User): User {
-        TODO("Not yet implemented")
+        val updatedUser = user.copy(userId = userId)
+        val result = users.findOneAndReplace(Filters.eq(User::userId.name, userId), updatedUser)
+        if (result != null) {
+            return updatedUser
+        } else {
+            throw NoSuchElementException("User not found with ID: $userId")
+        }
     }
 
     override suspend fun updateUserProfilePhoto(userId: String, userProfileUrl: String): User {
-        TODO("Not yet implemented")
+        val user = users.find(Filters.eq(User::userId.name, userId)).first()
+
+        val updatedUser = user.copy(userProfilePhoto = userProfileUrl)
+        users.replaceOne(Filters.eq(User::userId.name, userId), updatedUser)
+        return updatedUser
     }
 
     override suspend fun deleteUser(userId: String): Boolean {
