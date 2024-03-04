@@ -27,9 +27,10 @@ fun Route.chatRoutes(
         }
     }
 
+
     route("/message") {
         // Send message
-        post("{roomId}") {
+        /*post("{roomId}") {
             val roomId = call.parameters["roomId"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing roomId")
             val message = call.receive<Message>()
             if (userDataSource.sendMessage(message)) {
@@ -37,7 +38,7 @@ fun Route.chatRoutes(
             } else {
                 call.respond(HttpStatusCode.NotFound, "Room not found")
             }
-        }
+        }*/
 
         // Delete message
         delete("{messageId}") {

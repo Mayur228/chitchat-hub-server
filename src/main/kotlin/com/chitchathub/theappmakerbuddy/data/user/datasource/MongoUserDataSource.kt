@@ -3,7 +3,6 @@ package com.chitchathub.theappmakerbuddy.data.user.datasource
 import com.chitchathub.theappmakerbuddy.data.user.model.User
 import com.mongodb.client.model.Filters
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
