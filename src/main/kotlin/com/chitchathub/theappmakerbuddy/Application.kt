@@ -1,5 +1,7 @@
 package com.chitchathub.theappmakerbuddy
 
+import com.chitchathub.theappmakerbuddy.data.chat.controller.RoomController
+import com.chitchathub.theappmakerbuddy.data.chat.datasource.MongoChatDataSource
 import com.chitchathub.theappmakerbuddy.mongodb.configureMongoDatabase
 import com.chitchathub.theappmakerbuddy.plugins.*
 import io.ktor.server.application.*

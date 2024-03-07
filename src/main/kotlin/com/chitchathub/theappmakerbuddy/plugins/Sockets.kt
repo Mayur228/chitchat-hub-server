@@ -3,6 +3,7 @@ package com.chitchathub.theappmakerbuddy.plugins
 import com.chitchathub.theappmakerbuddy.data.chat.controller.RoomController
 import com.chitchathub.theappmakerbuddy.data.chat.datasource.MongoChatDataSource
 import com.chitchathub.theappmakerbuddy.data.chat.model.ChatSession
+import com.chitchathub.theappmakerbuddy.mongodb.configureMongoDatabase
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -13,7 +14,8 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 import java.time.Duration
 
-fun Application.configureSockets(roomController: RoomController) {
+fun Application.configureSockets() {
+    val roomController = RoomController(MongoChatDataSource(configureMongoDatabase()))
     install(WebSockets) {
         pingPeriod = Duration.ofSeconds(15)
         timeout = Duration.ofSeconds(15)

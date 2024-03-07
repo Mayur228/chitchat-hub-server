@@ -9,7 +9,7 @@ data class User(
     @BsonId
     val userId: String = ObjectId().toString(),
     val username: String,
-    val userProfilePhoto: String,
+    val userProfilePhoto: String?,
     val email: String,
     val phone: String,
     val password: String
