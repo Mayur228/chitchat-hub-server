@@ -1,6 +1,7 @@
 package com.chitchathub.theappmakerbuddy.data.user.model
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 

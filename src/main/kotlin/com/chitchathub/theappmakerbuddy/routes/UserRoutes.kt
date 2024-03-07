@@ -29,10 +29,24 @@ fun Route.userRouting(
         }
 
         get("/byUsername/{username}/{password}") {
+
             val username = call.parameters["username"] ?: return@get call.respondText("Wrong Username", status = HttpStatusCode.BadRequest)
             val password = call.parameters["password"] ?: return@get call.respondText("Wrong Password", status = HttpStatusCode.BadRequest)
-            val user = userDataSource.getUserByUsernameAndPassword(username, password) ?: return@get call.respondText("No User Found", status = HttpStatusCode.NotFound)
-            call.respond(user)
+
+            val users = userDataSource.getUsers()
+
+            if (users.isEmpty()) {
+                call.respondText("No users found", status = HttpStatusCode.NotFound)
+                return@get
+            }
+
+            val user = userDataSource.getUserByUsernameAndPassword(username, password)
+
+            if (user == null) {
+                call.respondText("No user found with the provided credentials", status = HttpStatusCode.NotFound)
+            } else {
+                call.respond(user)
+            }
         }
 
         get("/byId/{id?}"){

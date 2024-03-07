@@ -5,6 +5,7 @@ import com.mongodb.client.model.Filters
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
 
 class MongoUserDataSource(
@@ -36,10 +37,8 @@ class MongoUserDataSource(
                 Filters.eq(User::password.name,password)
             )
         )
-        users.find<User>(filter = filter).filterNotNull().collect{
-            user = it
-        }
-        return user
+
+        return users.find<User>(filter = filter).firstOrNull()
     }
 
     override suspend fun getUserByUsernameAndPassword(username: String, password: String): User? {
@@ -49,10 +48,8 @@ class MongoUserDataSource(
                 Filters.eq(User::password.name,password)
             )
         )
-        users.find<User>(filter = filter).filterNotNull().collect{
-            user = it
-        }
-        return user
+
+        return users.find<User>(filter = filter).firstOrNull()
     }
 
     override suspend fun registerUser(user: User): Boolean {
